@@ -1,5 +1,5 @@
 import './sass/main.scss';
-import NewsApiService from './js/news-api-service';
+import NewsApiService from './js/news-api-service.js';
 import markupCards from './templates/markupCards.hbs';
 import Notiflix from 'notiflix';
 
@@ -19,28 +19,34 @@ refs.formEl.addEventListener('submit', onSearch);
 
 async function onSearch(e) {
   e.preventDefault();
-
   newsApiService.query = e.currentTarget.elements.searchQuery.value.trim('');
 
   if (newsApiService.query === '') {
     return Notiflix.Notify.failure('Please, input your request.');
   }
-
   newsApiService.resetPage();
+
   try {
-    await newsApiService.getPictures().then(hits => {
+    let hits = await newsApiService.getPictures();
+
       clearGalleryContainer();
       appendCardsMarkup(hits);
       newsApiService.incrementPage();
-      loadMore();
-    });
-  } catch (error) {
+    loadMore();
+  }
+  catch (error) {
     console.log('No congruence');
   }
 }
 
-function appendCardsMarkup(hits) {
-  refs.gallery.insertAdjacentHTML('beforeend', markupCards(hits));
+async function getNewPage() {
+  let hits = await newsApiService.getPictures();
+  appendCardsMarkup(hits);
+  newsApiService.incrementPage();
+}
+
+async function appendCardsMarkup(hits) {
+  refs.gallery.insertAdjacentHTML('beforeend', await markupCards(hits));
   smoothScroll();
 }
 
@@ -52,38 +58,29 @@ function smoothScroll() {
   const { height: cardHeight } = document
     .querySelector('.gallery')
     .firstElementChild.getBoundingClientRect();
-
+  
   window.scrollBy({
     top: cardHeight * 2,
     behavior: 'smooth',
   });
 }
 
-async function loadMore() {
+function loadMore() {
   const onEntry = entries => {
     entries.forEach(entry => {
-      console.log(entry)
       if (entry.isIntersecting && newsApiService.query !== '') {
-        newsApiService.getPictures().then(hits => {
-          if (hits.lenght !== 0) {
-          appendCardsMarkup(hits);
-          newsApiService.incrementPage(); 
-          }
-          return Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-        });
-      }
-    });
-  };
-  
+        // if (hits.lenght === 0) {
+        //   return Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+        // }
+        
+        getNewPage();
+      }    
+    })
+  }
+
   const options = {
-    rootMargin: '100px',
+    rootMargin: "130px",
   };
   const observer = new IntersectionObserver(onEntry, options);
   observer.observe(refs.targetEl);
 }
-
-// if (hits === []) {
-//             
-//           }
-
-//console.log(document.getElementById('.gallery').children.length)
