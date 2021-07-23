@@ -1,0 +1,33 @@
+{
+  "name": "goit-js-hw-13",
+  "version": "1.1.0",
+  "description": "",
+  "main": "index.js",
+  "homepage": "https://Chantsova.github.io/goit-js-hw-13",
+  "scripts": {
+    "dev": "parcel src/*.html",
+    "build": "parcel build src/*.html --public-url /goit-js-hw-13/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chantsova/goit-js-hw-13.git"
+  },
+  "keywords": [],
+  "author": "Anastasia Chantsova <stasyadiv@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chantsova/goit-js-hw-13/issues"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-handlebars-precompile": "^1.0.2",
+    "parcel-plugin-nuke-dist": "^1.0.1",
+    "posthtml-include": "^1.6.2",
+    "sass": "^1.32.8"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "notiflix": "^3.0.1",
+    "simplelightbox": "^2.8.0"
+  }
+}
