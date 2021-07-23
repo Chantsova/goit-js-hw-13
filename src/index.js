@@ -2,8 +2,11 @@ import './sass/main.scss';
 import NewsApiService from './js/news-api-service.js';
 import markupCards from './templates/markupCards.hbs';
 import Notiflix from 'notiflix';
+import SimpleLightbox from "simplelightbox";
+import '../node_modules/simplelightbox/dist/simple-lightbox.min.css'
 
 Notiflix.Notify.init({ width: '400px', position: 'right-top', fontSize: '17px' });
+var lightbox = new SimpleLightbox('.gallery a');
 
 const refs = {
   formEl: document.querySelector('.search-form'),
@@ -32,7 +35,7 @@ async function onSearch(e) {
       clearGalleryContainer();
       appendCardsMarkup(hits);
       newsApiService.incrementPage();
-    loadMore();
+      loadMore();
   }
   catch (error) {
     console.log('No congruence');
@@ -47,7 +50,7 @@ async function getNewPage() {
 
 async function appendCardsMarkup(hits) {
   refs.gallery.insertAdjacentHTML('beforeend', await markupCards(hits));
-  smoothScroll();
+  lightbox.refresh();
 }
 
 function clearGalleryContainer() {
