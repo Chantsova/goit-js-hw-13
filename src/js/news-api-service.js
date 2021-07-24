@@ -1,5 +1,4 @@
 import Notiflix from 'notiflix';
-import SimpleLightbox from 'simplelightbox';
 
 export default class NewsApiService {
   constructor() {

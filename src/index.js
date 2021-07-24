@@ -76,7 +76,7 @@ function loadMore() {
   };
 
   const options = {
-    rootMargin: '130px',
+    rootMargin: '330px',
   };
   const observer = new IntersectionObserver(onEntry, options);
   observer.observe(refs.targetEl);
