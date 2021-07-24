@@ -6,7 +6,6 @@ import SimpleLightbox from "simplelightbox";
 import '../node_modules/simplelightbox/dist/simple-lightbox.min.css'
 
 Notiflix.Notify.init({ width: '400px', position: 'right-top', fontSize: '17px' });
-var lightbox = new SimpleLightbox('.gallery a');
 
 const refs = {
   formEl: document.querySelector('.search-form'),
@@ -14,11 +13,15 @@ const refs = {
   cardEl: document.querySelector('.photo-card'),
   spinnerEl: document.querySelector('.spinner'),
   targetEl: document.querySelector('#borderMark'),
+  bodyEl: document.querySelector('body')
 };
 
+var lightbox = new SimpleLightbox('.gallery a');
 const newsApiService = new NewsApiService();
 
+
 refs.formEl.addEventListener('submit', onSearch);
+refs.bodyEl.addEventListener('wheel', smoothScroll)
 
 async function onSearch(e) {
   e.preventDefault();
@@ -34,8 +37,9 @@ async function onSearch(e) {
 
       clearGalleryContainer();
       appendCardsMarkup(hits);
-      newsApiService.incrementPage();
-      loadMore();
+    newsApiService.incrementPage();
+    loadMore();
+
   }
   catch (error) {
     console.log('No congruence');
@@ -44,6 +48,11 @@ async function onSearch(e) {
 
 async function getNewPage() {
   let hits = await newsApiService.getPictures();
+  console.log(hits)
+  
+  if (hits.length === 0) {
+    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+  }
   appendCardsMarkup(hits);
   newsApiService.incrementPage();
 }
@@ -64,6 +73,7 @@ function smoothScroll() {
   
   window.scrollBy({
     top: cardHeight * 2,
+    bottom: cardHeight * 2,
     behavior: 'smooth',
   });
 }
@@ -71,18 +81,15 @@ function smoothScroll() {
 function loadMore() {
   const onEntry = entries => {
     entries.forEach(entry => {
+      
       if (entry.isIntersecting && newsApiService.query !== '') {
-        // if (hits.lenght === 0) {
-        //   return Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-        // }
-        
         getNewPage();
       }    
     })
   }
 
   const options = {
-    rootMargin: "130px",
+    rootMargin: "330px",
   };
   const observer = new IntersectionObserver(onEntry, options);
   observer.observe(refs.targetEl);
