@@ -15,7 +15,6 @@ const refs = {
 };
 
 Notiflix.Notify.init({ width: '400px', position: 'right-top', fontSize: '17px' });
-
 var lightbox = new SimpleLightbox('.gallery a');
 
 const newsApiService = new NewsApiService();
@@ -46,9 +45,9 @@ async function onSearch(e) {
 async function getNewPage() {
   let hits = await newsApiService.getPictures();
 
-  setTimeout(getNew, 300);
+  setTimeout(renderingNewPage, 300);
 
-  function getNew() {
+  function renderingNewPage() {
     appendCardsMarkup(hits);
     newsApiService.incrementPage();
 
