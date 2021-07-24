@@ -1,5 +1,5 @@
 import Notiflix from 'notiflix';
-import SimpleLightbox from "simplelightbox";
+import SimpleLightbox from 'simplelightbox';
 
 export default class NewsApiService {
   constructor() {
@@ -8,7 +8,6 @@ export default class NewsApiService {
   }
 
   async getPictures() {
-    
     const axios = require('axios');
     return await axios
       .get('https://pixabay.com/api/', {
@@ -36,7 +35,7 @@ export default class NewsApiService {
         }
         const hits = response.data.hits;
         return hits;
-      })
+      });
   }
 
   incrementPage() {
