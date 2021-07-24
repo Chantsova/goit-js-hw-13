@@ -1,9 +1,9 @@
 import './sass/main.scss';
+import '../node_modules/simplelightbox/dist/simple-lightbox.min.css';
 import NewsApiService from './js/news-api-service.js';
 import markupCards from './templates/markupCards.hbs';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
-import '../node_modules/simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
   formEl: document.querySelector('.search-form'),
@@ -15,7 +15,9 @@ const refs = {
 };
 
 Notiflix.Notify.init({ width: '400px', position: 'right-top', fontSize: '17px' });
+
 var lightbox = new SimpleLightbox('.gallery a');
+
 const newsApiService = new NewsApiService();
 
 refs.formEl.addEventListener('submit', onSearch);
